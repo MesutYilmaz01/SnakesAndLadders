@@ -22,6 +22,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import message.Message;
 
 /**
  *
@@ -29,15 +30,26 @@ import javax.swing.JPanel;
  */
 public class Main {
 
+    public static Main ThisGame;
+    public static String player = "-1";
+    //karşı tarafın seçimi seçim -1 deyse seçilmemiş
+    public int RivalSelection = -1;
+    //benim seçimim seçim -1 deyse seçilmemiş
+    public int myselection = -1;
     public static Coordinate[] coordinatesArray = new Coordinate[100];
     final static Tile_Object t1 = new Tile_Object(Color.GREEN, true);
     final static Tile_Object t2 = new Tile_Object(Color.BLUE, false);
     final static JButton btn1 = new JButton("READY");
     final static JButton btn2 = new JButton("READY");
     final static JButton again = new JButton("Play Again?");
+    final static JButton connect = new JButton("Sunucuya Bağlan");
     final static JLabel player1 = new JLabel("PLAYER1");
     final static JLabel player2 = new JLabel("PLAYER2");
     final static JLabel whoIsTurn = new JLabel("");
+
+    public Main() {
+        ThisGame = this;
+    }
 
     public static void main(String[] args) {
         getCoordinates();
@@ -120,6 +132,10 @@ public class Main {
 
                     t1._turn = false;
                     btn1.setEnabled(false);
+                    Message msg = new Message(Message.Message_Type.Locations);
+                    int[] array = {oldValue, randomNumber};
+                    msg.array = array;
+                    Client.Send(msg);
                 }
             }
         });
@@ -135,8 +151,6 @@ public class Main {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //your actions
-
                 int flag = 0;
                 if (t2._turn == true) {
                     t1._turn = true;
@@ -181,6 +195,10 @@ public class Main {
 
                     t2._turn = false;
                     btn2.setEnabled(false);
+                    Message msg = new Message(Message.Message_Type.Locations);
+                    int[] array = {oldValue, randomNumber};
+                    msg.array = array;
+                    Client.Send(msg);
                 }
             }
         });
@@ -221,6 +239,34 @@ public class Main {
                 whoIsTurn.setBounds(350, 580, 100, 100);
                 whoIsTurn.setFont(new Font("Serif", Font.BOLD, 40));
                 whoIsTurn.setText("<");
+            }
+        });
+
+        connect.setBounds(300, 650, 100, 50);
+        connect.setVisible(true);
+        obj.add(connect);
+        connect.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Client.Start("127.0.0.1", 2000);
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                System.out.println("Player numaram " + player);
+                if (player.equals("0")) {
+                    btn1.setVisible(true);
+                    btn2.setVisible(false);
+                } else if (player.equals("1")) {
+                    btn2.setVisible(true);
+                    btn1.setVisible(false);
+                } else {
+                    btn1.setVisible(false);
+                    btn2.setVisible(false);
+                }
+                connect.setVisible(false);
             }
         });
 
