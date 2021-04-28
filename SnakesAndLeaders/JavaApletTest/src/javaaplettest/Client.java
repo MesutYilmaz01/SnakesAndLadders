@@ -44,6 +44,9 @@ class Listen extends Thread {
                         String name = received.content.toString();
                         System.out.println("Eşleşti");
                         break;
+                    case Text:
+                        Main.player= received.content.toString();
+                        break;
                     case Locations:
                         if (Main.player.equals("0")) {
                             int flag = 0;
