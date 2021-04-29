@@ -36,7 +36,7 @@ class ServerThread extends Thread {
                 //bir adet id de kendimiz verdik
                 SClient nclient = new SClient(clientSocket, Server.IdClient);
                 Message msg = new Message(Message.Message_Type.Text);
-                msg.content = Server.IdClient;
+                msg.playerNumber = Server.IdClient;	//gelen her kullanıcıua numara ata.
                 Server.Send(nclient, msg);
                 
                 Server.IdClient++;

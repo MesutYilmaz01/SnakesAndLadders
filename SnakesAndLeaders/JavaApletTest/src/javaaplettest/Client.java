@@ -45,16 +45,18 @@ class Listen extends Thread {
                         System.out.println("Eşleşti");
                         break;
                     case Text:
-                        Main.player= received.content.toString();
+                        Main.player= received.playerNumber;
                         break;
                     case Locations:
-                        if (Main.player.equals("0")) {
+                        if (Main.player % 2 == 0)) {
+							//eğer gelen oyuncu ilk oyuncuysa ikinci gelenden aldıgı mesajı kendi ekranında uygulayacak
+							//buradaki algoritma maindeki algoritmanın aynısı. aynısı ikinci oyuncu içinde birinciden geleni uygulamaktadır.
+							//gelen mesajda eski değer ve üretilen sayı burada yeniden çizilmeyi sağlıyor.
                             int flag = 0;
                             if (t2._turn == true) {
                                 t1._turn = true;
                                 Main.btn1.setEnabled(true);
                                 int oldValue = received.array[0];
-                                Random rnd = new Random();
                                 int randomNumber = received.array[1];
                                 t2.location = t2.location + randomNumber;
                                 Main.btn2.setText(String.valueOf(randomNumber));
@@ -94,13 +96,12 @@ class Listen extends Thread {
                                 Main.btn2.setEnabled(false);
                             }
                         }
-                        if (Main.player.equals("1")) {
+                        if (Main.player % 2 == 1) {
                             int flag = 0;
                             if (t1._turn == true) {
                                 t2._turn = true;
                                 Main.btn2.setEnabled(true);
                                 int oldValue = received.array[0];
-                                Random rnd = new Random();
                                 int randomNumber = received.array[1];
                                 t1.location = t1.location + randomNumber;
                                 Main.btn1.setText(String.valueOf(randomNumber));

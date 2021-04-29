@@ -22,6 +22,7 @@ public class Message implements java.io.Serializable {
         this.type=t;
     }
     public int[] array;
+	public int playerNumber;
  
 
     
